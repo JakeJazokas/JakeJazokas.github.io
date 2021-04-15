@@ -6,6 +6,8 @@
 
 body {
   font-family: 'Lato';
+  /* background-color: #CBC3E3; */
+  background-color: white;
 }
 
 h1,
@@ -59,13 +61,14 @@ header.masthead {
   overflow: hidden;
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
-  background: linear-gradient(0deg, #619ab7 0%, #b77e61 100%);
-  /* background-image: url('../img/LinearBTabletJJazokas.png') !important; */
+  /* background: linear-gradient(0deg, #ff6a00 0%, #ee0979 100%); */
+  /* background: linear-gradient(0deg, #CBC3E3 0%, #ee0979 100%); */
+  background: #000;
+  border-bottom: 2em #bd0760 solid;
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: scroll;
   background-size: cover;
-  /* height: 1080px; */
 }
 
 header.masthead .masthead-content {
@@ -85,7 +88,7 @@ header.masthead .bg-circle {
   z-index: 0;
   position: absolute;
   border-radius: 100%;
-  background: linear-gradient(0deg, #b77e61 0%, #619ab7 100%);
+  background: linear-gradient(0deg, #ee0979 0%, #ff6a00 100%);
 }
 
 header.masthead .bg-circle-1 {
@@ -161,6 +164,74 @@ header.masthead .bg-circle-4 {
   box-shadow: 0 0 0 0.2rem rgba(255, 106, 0, 0.5);
 }
 
+/* JAKES CODE HERE */
+
 .jake-img{
   padding-top: calc(7rem + 72px);;
+}
+
+.jfloating {
+  /* float:left;
+  clear:left;
+  margin:1em;
+  width:200px;
+  height:200px;
+  background:#aaa; */
+  /* box-shadow:0 8px 8px #000;
+  -moz-box-shadow:0 8px 8px #000;
+  -webkit-box-shadow:0 8px 8px #000; */
+  border-radius: 15px;
+  background-color: white;
+  width: 85% !important;
+  /* position: relative;
+  z-index: 10; */
+  /* margin-top: -2em; */
+  margin-bottom: 2em;
+  -moz-box-shadow: 0px 8px 8px #000; width: 200px;
+  -webkit-box-shadow: 0px 8px 8px #000; width: 200px;
+  box-shadow: 0px 8px 8px #000; width: 200px;
+}
+
+.jfloating2 {
+  width: 85% !important;
+  padding-top: 1em;
+  text-align: center;
+  border-radius: 15px;
+  background-color: white;
+  padding-bottom: 1em;
+  margin-bottom: 2em;
+  -moz-box-shadow: 0px 8px 8px #000; width: 200px;
+  -webkit-box-shadow: 0px 8px 8px #000; width: 200px;
+  box-shadow: 0px 8px 8px #000; width: 200px;
+}
+
+.p-j {
+  padding-top: 3rem;
+  padding-right: 3rem;
+  padding-bottom: 3rem;
+  padding-left: 3rem;
+}
+
+.bibj {
+  border-top: 2em #bd0760 solid;
+  color: white;
+  background-color: black;
+}
+
+.bibj > div > div > div > h2 {
+  color: #bd0760;
+}
+
+/* .bibjimg { */
+.bibjimg > div > div > div {  
+  color: white;
+  background-color: black;
+}
+.bibjimg > div {
+  border-left: 2em #bd0760 solid;
+  border-right: 2em #bd0760 solid;
+}
+
+a {
+  color: #bd0760;
 }
