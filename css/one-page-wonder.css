@@ -238,7 +238,8 @@ a {
 
 .p-j a:hover img {
   display: block;
-  margin-left: -5vw;
+  margin-left: -15vw;
+   margin-top: -5vh;
  }
  
  .p-j a img {
@@ -251,7 +252,7 @@ a {
 
  .p-5 a:hover img {
   display: block;
-  margin-left: -7vw;
+  margin-left: -15vw;
   margin-top: -5vh;
  }
  
