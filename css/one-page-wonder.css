@@ -235,3 +235,30 @@ header.masthead .bg-circle-4 {
 a {
   color: #bd0760;
 }
+
+.p-j a:hover img {
+  display: block;
+  margin-left: -5vw;
+ }
+ 
+ .p-j a img {
+  display: none;
+  position: absolute;
+  background-color: #ff0000;
+  z-index: 98;
+  border: .2em #bd0760 solid;
+ }
+
+ .p-5 a:hover img {
+  display: block;
+  margin-left: -7vw;
+  margin-top: -5vh;
+ }
+ 
+ .p-5 a img {
+  display: none;
+  position: absolute;
+  background-color: #ff0000;
+  z-index: 98;
+  border: .2em #bd0760 solid;
+ }
