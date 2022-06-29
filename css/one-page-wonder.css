@@ -235,9 +235,10 @@ header.masthead .bg-circle-4 {
   border-right: 2em #bd0760 solid;
 }
 
-a {
+/* Got rid of this bc its messing up my social links */
+/* a {
   color: #bd0760;
-}
+} */
 
 .p-j a:hover img {
   display: block;
@@ -285,10 +286,10 @@ a {
   }
 
   .social-link {
-    color: #ffffff;
+    color: #ffffff !important;
   }
 
   .social-link:hover {
-    color: #000000;
+    color: #000000 !important;
     transition: all 0.9s;
   }
