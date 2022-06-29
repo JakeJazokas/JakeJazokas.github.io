@@ -17,7 +17,9 @@ h4,
 h5,
 h6 {
   font-family: 'Catamaran';
-  font-weight: 800 !important;
+  /* font-weight: 800 !important; */
+  font-weight: 300;
+  line-height: 1.2;
 }
 
 .btn-xl {
@@ -61,10 +63,11 @@ header.masthead {
   overflow: hidden;
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
-  /* background: linear-gradient(0deg, #ff6a00 0%, #ee0979 100%); */
+  /* background: linear-gradient(40deg, #4484ce 0%, #ff6a00 50%, #ee0979 100%); */
+  background: linear-gradient(40deg, #EA4C46 0%, #F07470 50%, #F1959B 100%);
   /* background: linear-gradient(0deg, #CBC3E3 0%, #ee0979 100%); */
-  background: #000;
-  border-bottom: 2em #bd0760 solid;
+  /* background: #000; */
+  /* border-bottom: 2em #bd0760 solid; */
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: scroll;
