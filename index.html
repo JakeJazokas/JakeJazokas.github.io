@@ -71,18 +71,8 @@
 
     html {
       scroll-behavior: smooth;
-      /* sections settle to edge alignment when scrolling slows near them */
-      scroll-snap-type: y proximity;
       scroll-padding-top: var(--nav-h);
     }
-
-    .hero,
-    .section {
-      scroll-snap-align: start;
-    }
-
-    /* let the page-bottom rest normally instead of snapping short */
-    .footer { scroll-snap-align: end; }
 
     body {
       margin: 0;
@@ -245,7 +235,7 @@
     .js .reveal-fade.in { opacity: 1; }
 
     @media (prefers-reduced-motion: reduce) {
-      /* decorative reveals only — smooth scroll + snap stay (navigation, not decoration) */
+      /* decorative reveals only — smooth scrolling stays (navigation, not decoration) */
       .js .reveal, .js .reveal-fade { opacity: 1; transform: none; transition: none; }
       * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
     }
