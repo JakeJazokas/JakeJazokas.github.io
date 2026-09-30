@@ -12,7 +12,7 @@
   <meta property="og:title" content="Jake Jazokas — Software Developer">
   <meta property="og:description" content="Software developer and technology leader taking products from concept to live deployment.">
 
-  <title>Jake Jazokas — Senior Software Developer</title>
+  <title>Jake Jazokas — Software Developer</title>
   <link rel="icon" href="img/favicon.ico" sizes="16x16 32x32">
   <link rel="icon" type="image/png" href="img/favicon-64.png" sizes="64x64">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
@@ -65,6 +65,58 @@
       --container: 1120px;
       --pad-x: 24px;
       --nav-h: 64px;
+
+      /* theme internals (light defaults; overridden by [data-theme="dark"]) */
+      color-scheme: light;
+      --nav-bg: rgb(255 255 255 / 0.85);
+      --hairline: rgba(0, 0, 0, 0.08);
+      --on-ink: #ffffff;               /* text on --ink-1 fills */
+      --selection-bg: hsl(212 100% 48% / 0.14);
+      --link-underline: rgba(0, 0, 0, 0.3);
+      --media-plate: #fafafa;          /* image tiles stay light in both themes */
+      --media-ring: #ebebeb;
+      --hero-halo: rgba(0, 112, 243, 0.08);
+      --hero-halo-2: rgba(23, 23, 23, 0.04);
+      --hero-grid: rgba(23, 23, 23, 0.05);
+    }
+
+    [data-theme="dark"] {
+      color-scheme: dark;
+
+      /* ink ramp */
+      --ink-1: #ededed;
+      --ink-2: #a1a1a1;
+      --ink-3: #8f8f8f;
+      --page: #0a0a0a;
+      --wash: #111111;
+
+      /* depth */
+      --ring: 0 0 0 1px rgba(255, 255, 255, 0.14);
+      --card-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.14),
+        0 2px 2px rgba(0, 0, 0, 0.5),
+        0 8px 8px -8px rgba(0, 0, 0, 0.5),
+        0 0 0 1px #111111;
+      --card-shadow-hover:
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 6px 6px rgba(0, 0, 0, 0.5),
+        0 16px 24px -12px rgba(0, 0, 0, 0.6),
+        0 0 0 1px #111111;
+
+      /* functional accent */
+      --accent: #3291ff;
+      --focus-ring: 2px solid hsl(212 100% 62%);
+
+      /* theme internals */
+      --nav-bg: rgb(10 10 10 / 0.8);
+      --hairline: rgba(255, 255, 255, 0.14);
+      --on-ink: #0a0a0a;
+      --selection-bg: rgba(50, 145, 255, 0.42);
+      --link-underline: rgba(255, 255, 255, 0.35);
+      --media-ring: #222222;
+      --hero-halo: rgba(50, 145, 255, 0.13);
+      --hero-halo-2: rgba(255, 255, 255, 0.04);
+      --hero-grid: rgba(255, 255, 255, 0.06);
     }
 
     * { box-sizing: border-box; }
@@ -86,7 +138,7 @@
       font-feature-settings: "liga";
     }
 
-    ::selection { background: hsl(212 100% 48% / 0.14); color: var(--ink-1); }
+    ::selection { background: var(--selection-bg); color: var(--ink-1); }
 
     :focus-visible {
       outline: var(--focus-ring);
@@ -107,7 +159,7 @@
       top: 12px;
       z-index: 100;
       background: var(--ink-1);
-      color: #fff;
+      color: var(--on-ink);
       padding: 10px 16px;
       border-radius: 6px;
       font-size: 14px;
@@ -121,10 +173,10 @@
       position: sticky;
       top: 0;
       z-index: 50;
-      background: rgb(255 255 255 / 0.85);
+      background: var(--nav-bg);
       -webkit-backdrop-filter: blur(12px);
       backdrop-filter: blur(12px);
-      box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 0 0 var(--hairline);
     }
 
     .nav-inner {
@@ -201,7 +253,7 @@
       align-items: center;
       gap: 8px;
       background: var(--ink-1);
-      color: #fff;
+      color: var(--on-ink);
       font-size: 14px;
       font-weight: 500;
       text-decoration: none;
@@ -212,6 +264,46 @@
 
     .nav-cta:hover { opacity: 0.88; }
     .nav-cta:active { transform: scale(0.98); }
+
+    /* ---------- Theme toggle ---------- */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--ink-3);
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    }
+
+    .theme-toggle:hover { background: var(--wash); color: var(--ink-1); }
+    .theme-toggle:active { transform: scale(0.95); }
+
+    .theme-toggle span {
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: currentColor;
+    }
+
+    .theme-toggle .icon-moon {
+      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>') center / contain no-repeat;
+      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>') center / contain no-repeat;
+    }
+
+    .theme-toggle .icon-sun {
+      display: none;
+      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>') center / contain no-repeat;
+      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>') center / contain no-repeat;
+    }
+
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 
     /* ---------- Reveal-on-scroll (gated on .js so content shows without JS) ---------- */
     .js .reveal {
@@ -254,8 +346,8 @@
       inset: 0;
       pointer-events: none;
       background:
-        radial-gradient(640px 320px at 50% -60px, rgba(0, 112, 243, 0.08), transparent 70%),
-        radial-gradient(880px 460px at 82% 8%, rgba(23, 23, 23, 0.04), transparent 70%);
+        radial-gradient(640px 320px at 50% -60px, var(--hero-halo), transparent 70%),
+        radial-gradient(880px 460px at 82% 8%, var(--hero-halo-2), transparent 70%);
     }
 
     .hero::after {
@@ -264,8 +356,8 @@
       inset: 0;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(23, 23, 23, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(23, 23, 23, 0.05) 1px, transparent 1px);
+        linear-gradient(var(--hero-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--hero-grid) 1px, transparent 1px);
       background-size: 56px 56px;
       -webkit-mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 18%, transparent 72%);
       mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 18%, transparent 72%);
@@ -315,7 +407,7 @@
 
     .btn:active { transform: scale(0.98); }
 
-    .btn-dark { background: var(--ink-1); color: #fff; }
+    .btn-dark { background: var(--ink-1); color: var(--on-ink); }
     .btn-dark:hover { opacity: 0.88; }
 
     .btn-ghost { background: var(--page); color: var(--ink-1); box-shadow: var(--ring); }
@@ -329,7 +421,7 @@
 
     /* ---------- Facts strip ---------- */
     .facts {
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      border-top: 1px solid var(--hairline);
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 0;
@@ -338,7 +430,7 @@
 
     .fact {
       padding: 24px 28px 0;
-      border-left: 1px solid rgba(0, 0, 0, 0.08);
+      border-left: 1px solid var(--hairline);
     }
 
     .fact:first-child { border-left: 0; padding-left: 0; }
@@ -364,7 +456,7 @@
     .fact dd a {
       color: inherit;
       text-decoration: none;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+      border-bottom: 1px solid var(--link-underline);
       transition: border-color 0.2s ease;
     }
 
@@ -421,7 +513,7 @@
     .about-copy a {
       color: inherit;
       text-decoration: none;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+      border-bottom: 1px solid var(--link-underline);
       transition: border-color 0.2s ease;
     }
 
@@ -452,9 +544,10 @@
       aspect-ratio: 16 / 10;
       overflow: hidden;
       position: relative;
-      background: var(--wash);
+      /* images are opaque light illustrations — keep a light plate in both themes */
+      background: var(--media-plate);
       border-radius: 12px 12px 0 0;
-      box-shadow: 0 0 0 1px #ebebeb;
+      box-shadow: 0 0 0 1px var(--media-ring);
     }
 
     .card-media img {
@@ -548,7 +641,7 @@
       gap: 24px;
       align-items: start;
       padding: 22px 0;
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      border-top: 1px solid var(--hairline);
     }
 
     .skill-row:first-child { border-top: 0; padding-top: 0; }
@@ -587,7 +680,7 @@
 
     /* ---------- Footer ---------- */
     .footer {
-      box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.08);
+      box-shadow: 0 -1px 0 0 var(--hairline);
       padding: 20px 0;
     }
 
@@ -606,7 +699,7 @@
       .sec-label { position: static; }
       .cards { grid-template-columns: 1fr; }
       .facts { grid-template-columns: 1fr; }
-      .fact { border-left: 0; border-top: 1px solid rgba(0, 0, 0, 0.08); padding: 20px 0 0; }
+      .fact { border-left: 0; border-top: 1px solid var(--hairline); padding: 20px 0 0; }
       .fact:first-child { border-top: 0; padding: 0 0 4px; }
       .skill-row { grid-template-columns: 1fr; gap: 10px; padding: 18px 0; }
       .skill-cat { padding-top: 0; }
@@ -635,6 +728,17 @@
     ]
   }
   </script>
+  <script>(function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var dark = stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (dark) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) { /* storage blocked — fall back to light */ }
+    })();
+  </script>
 </head>
 
 <body>
@@ -653,6 +757,10 @@
       </ul>
 
       <div class="nav-actions">
+        <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <span class="icon-moon" aria-hidden="true"></span>
+          <span class="icon-sun" aria-hidden="true"></span>
+        </button>
         <a class="nav-resume" href="resume/JakeJazokasResume.pdf" download="JakeJazokasResume.pdf" aria-label="Download resume"><span class="nav-resume-label">Resume</span></a>
         <a class="nav-cta" href="mailto:jakejazokas@outlook.com">Email me</a>
       </div>
@@ -921,6 +1029,28 @@
           target.scrollIntoView({ behavior: 'smooth' });
         });
       });
+
+      // theme toggle
+      var toggle = document.getElementById('theme-toggle');
+      if (toggle) {
+        var mql = window.matchMedia('(prefers-color-scheme: dark)');
+        var applyTheme = function (dark) {
+          var root = document.documentElement;
+          root.classList.toggle('dark', dark);
+          if (dark) { root.setAttribute('data-theme', 'dark'); }
+          else { root.removeAttribute('data-theme'); }
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#0a0a0a' : '#ffffff');
+        };
+        toggle.addEventListener('click', function () {
+          var dark = !document.documentElement.classList.contains('dark');
+          try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) { /* storage blocked */ }
+          applyTheme(dark);
+        });
+        // user preference stored → their explicit choice wins forever; else track OS changes
+        if (!localStorage.getItem('theme')) {
+          mql.addEventListener('change', function (e) { applyTheme(e.matches); });
+        }
+      }
     })();
   </script>
 
