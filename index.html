@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Jake Jazokas — software developer and technology leader taking products from concept to live deployment. Computer Science, Carleton University.">
+  <meta name="author" content="Jake Jazokas">
+  <meta name="theme-color" content="#ffffff">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Jake Jazokas — Software Developer">
+  <meta property="og:description" content="Software developer and technology leader taking products from concept to live deployment.">
+
+  <title>Jake Jazokas — Software Developer</title>
+  <link rel="icon" href="img/favicon.ico" sizes="16x16 32x32">
+  <link rel="icon" type="image/png" href="img/favicon-64.png" sizes="64x64">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+
+  <!-- Fonts: Geist (sans) + Geist Mono (technical labels) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!--
+    Design tokens — extracted from Vercel's Geist design language:
+    - ink ramp on a white canvas (no pure black text)
+    - shadow-as-border: 0 0 0 1px rgba(0,0,0,.08) instead of CSS borders
+    - multi-layer card shadow stack with inner fafafa ring
+    - three weights only: 400 read / 500 interact / 600 announce
+    - negative tracking that relaxes as size decreases
+    - one functional accent (console blue) — never decorative fill
+  -->
+  <style>
+    :root {
+      /* ink ramp */
+      --ink-1: #171717;        /* headings, primary text */
+      --ink-2: #4d4d4d;        /* body copy */
+      --ink-3: #666666;        /* muted labels */
+      --page: #ffffff;
+      --wash: #fafafa;         /* subtle surface + inner card ring */
+
+      /* depth — shadow-as-border philosophy */
+      --ring: 0 0 0 1px rgba(0, 0, 0, 0.08);
+      --card-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.08),
+        0 2px 2px rgba(0, 0, 0, 0.04),
+        0 8px 8px -8px rgba(0, 0, 0, 0.04),
+        0 0 0 1px #fafafa;
+      --card-shadow-hover:
+        0 0 0 1px rgba(0, 0, 0, 0.08),
+        0 6px 6px rgba(0, 0, 0, 0.04),
+        0 16px 24px -12px rgba(0, 0, 0, 0.10),
+        0 0 0 1px #fafafa;
+
+      /* functional accent */
+      --accent: #0070f3;
+      --focus-ring: 2px solid hsl(212 100% 48%);
+
+      /* type */
+      --sans: "Geist", -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --mono: "Geist Mono", ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, monospace;
+
+      /* layout */
+      --container: 1120px;
+      --pad-x: 24px;
+      --nav-h: 64px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      /* sections settle to edge alignment when scrolling slows near them */
+      scroll-snap-type: y proximity;
+      scroll-padding-top: var(--nav-h);
+    }
+
+    .hero,
+    .section {
+      scroll-snap-align: start;
+    }
+
+    /* let the page-bottom rest normally instead of snapping short */
+    .footer { scroll-snap-align: end; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink-2);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: "liga";
+    }
+
+    ::selection { background: hsl(212 100% 48% / 0.14); color: var(--ink-1); }
+
+    :focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    .container {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: var(--pad-x);
+    }
+
+    /* ---------- Skip link ---------- */
+    .skip {
+      position: absolute;
+      left: -9999px;
+      top: 12px;
+      z-index: 100;
+      background: var(--ink-1);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .skip:focus-visible { left: 12px; }
+
+    /* ---------- Navigation ---------- */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgb(255 255 255 / 0.85);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-inner {
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-brand {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      color: var(--ink-1);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-3);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--ink-1); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-resume {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-1);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      box-shadow: var(--ring);
+      white-space: nowrap;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    .nav-resume:hover { background: var(--wash); }
+    .nav-resume:active { transform: scale(0.98); }
+
+    .nav-resume::before {
+      content: "";
+      width: 14px;
+      height: 14px;
+      background: currentColor;
+      /* download tray */
+      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>') center / contain no-repeat;
+      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>') center / contain no-repeat;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--ink-1);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: transform 0.15s ease, opacity 0.2s ease;
+    }
+
+    .nav-cta:hover { opacity: 0.88; }
+    .nav-cta:active { transform: scale(0.98); }
+
+    /* ---------- Reveal-on-scroll (gated on .js so content shows without JS) ---------- */
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: calc(var(--d, 0) * 90ms);
+    }
+
+    .js .reveal.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* labels fade only — transform would break position: sticky */
+    .js .reveal-fade {
+      opacity: 0;
+      transition: opacity 0.55s ease 0.12s;
+    }
+
+    .js .reveal-fade.in { opacity: 1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      /* decorative reveals only — smooth scroll + snap stay (navigation, not decoration) */
+      .js .reveal, .js .reveal-fade { opacity: 1; transform: none; transition: none; }
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 128px 0 88px;
+    }
+
+    /* one atmosphere: faint blue halo + fine grid fading out — static, CSS only */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(640px 320px at 50% -60px, rgba(0, 112, 243, 0.08), transparent 70%),
+        radial-gradient(880px 460px at 82% 8%, rgba(23, 23, 23, 0.04), transparent 70%);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(23, 23, 23, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23, 23, 23, 0.05) 1px, transparent 1px);
+      background-size: 56px 56px;
+      -webkit-mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 18%, transparent 72%);
+      mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 18%, transparent 72%);
+    }
+
+    .hero .container { position: relative; z-index: 1; }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 5.25rem);
+      font-weight: 600;
+      letter-spacing: -0.045em;
+      line-height: 1.02;
+      color: var(--ink-1);
+      margin: 0 0 24px;
+      text-wrap: balance;
+    }
+
+    .hero-lede {
+      font-size: 20px;
+      line-height: 1.7;
+      max-width: 640px;
+      color: var(--ink-2);
+      margin: 0 0 36px;
+      text-wrap: pretty;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 6px;
+      transition: transform 0.15s ease, opacity 0.2s ease, background 0.2s ease;
+    }
+
+    .nav-cta { white-space: nowrap; padding: 8px 16px; }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-dark { background: var(--ink-1); color: #fff; }
+    .btn-dark:hover { opacity: 0.88; }
+
+    .btn-ghost { background: var(--page); color: var(--ink-1); box-shadow: var(--ring); }
+    .btn-ghost:hover { background: var(--wash); }
+
+    /* icon-only resume on very small screens */
+    @media (max-width: 480px) {
+      .nav-resume-label { display: none; }
+      .nav-resume { padding: 10px 11px; }
+    }
+
+    /* ---------- Facts strip ---------- */
+    .facts {
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 72px;
+    }
+
+    .fact {
+      padding: 24px 28px 0;
+      border-left: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .fact:first-child { border-left: 0; padding-left: 0; }
+
+    .fact dt {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin: 0 0 8px;
+    }
+
+    .fact dd {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink-1);
+      line-height: 1.45;
+    }
+
+    .fact dd a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+      transition: border-color 0.2s ease;
+    }
+
+    .fact dd a:hover { border-bottom-color: var(--accent); }
+
+    /* ---------- Section scaffolding (editorial: sticky label left, content right) ---------- */
+    .section { padding: 104px 0 112px; }
+    .section + .section { padding-top: 0; }
+
+    .sec-grid {
+      display: grid;
+      grid-template-columns: 224px minmax(0, 1fr);
+      gap: 48px;
+      align-items: start;
+    }
+
+    .sec-label {
+      position: sticky;
+      top: calc(var(--nav-h) + 32px);
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      padding-top: 4px;
+    }
+
+    .sec-num {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .sec-name {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--ink-1);
+      text-transform: uppercase;
+    }
+
+    /* ---------- About ---------- */
+    .about-copy p {
+      margin: 0 0 20px;
+      font-size: 18px;
+      line-height: 1.8;
+      max-width: 62ch;
+      text-wrap: pretty;
+    }
+
+    .about-copy p:last-child { margin-bottom: 0; }
+
+    .about-copy strong { color: var(--ink-1); font-weight: 600; }
+
+    .about-copy a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+      transition: border-color 0.2s ease;
+    }
+
+    .about-copy a:hover { border-bottom-color: var(--accent); }
+
+    /* ---------- Project cards ---------- */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      background: var(--page);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .card-media {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      position: relative;
+      background: var(--wash);
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 0 0 1px #ebebeb;
+    }
+
+    .card-media img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 20px;
+      display: block;
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 12px;
+      padding: 24px;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.6px;
+      line-height: 1.3;
+      color: var(--ink-1);
+      text-wrap: balance;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-2);
+      padding: 3px 10px;
+      border-radius: 999px;
+      box-shadow: var(--ring);
+    }
+
+    .card-text {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--ink-2);
+      flex: 1;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-1);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .card-link::after {
+      content: "";
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+      background: currentColor;
+      /* arrow-up-right */
+      -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>') center / contain no-repeat;
+      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>') center / contain no-repeat;
+    }
+
+    .card-link:hover { color: var(--accent); }
+    .card-link:hover::after { transform: translate(2px, -2px); }
+
+    /* ---------- Skills (grouped definition rows instead of a card wall) ---------- */
+    .skill-rows {
+      display: grid;
+      gap: 0;
+    }
+
+    .skill-row {
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+      padding: 22px 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .skill-row:first-child { border-top: 0; padding-top: 0; }
+
+    .skill-cat {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      padding-top: 7px;
+    }
+
+    .skill-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chip {
+      list-style: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-1);
+      padding: 7px 14px;
+      border-radius: 999px;
+      box-shadow: var(--ring);
+      background: var(--page);
+      transition: background 0.2s ease;
+    }
+
+    .chip:hover { background: var(--wash); }
+
+    /* ---------- Footer ---------- */
+    .footer {
+      box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.08);
+      padding: 20px 0;
+    }
+
+    .footer-note {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-3);
+      display: block;
+      text-align: center;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .sec-grid { grid-template-columns: 1fr; gap: 24px; }
+      .sec-label { position: static; }
+      .cards { grid-template-columns: 1fr; }
+      .facts { grid-template-columns: 1fr; }
+      .fact { border-left: 0; border-top: 1px solid rgba(0, 0, 0, 0.08); padding: 20px 0 0; }
+      .fact:first-child { border-top: 0; padding: 0 0 4px; }
+      .skill-row { grid-template-columns: 1fr; gap: 10px; padding: 18px 0; }
+      .skill-cat { padding-top: 0; }
+    }
+
+    @media (max-width: 760px) {
+      .nav-links { display: none; }
+      .hero { padding: 88px 0 64px; }
+      .section { padding: 72px 0 80px; }
+      .hero h1 { margin-bottom: 18px; }
+      .hero-lede { font-size: 18px; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Jake Jazokas",
+    "email": "mailto:jakejazokas@outlook.com",
+    "alumniOf": { "@type": "CollegeOrUniversity", "name": "Carleton University" },
+    "jobTitle": "Software Developer",
+    "sameAs": [
+      "https://github.com/JakeJazokas",
+      "https://www.linkedin.com/in/jake-jazokas-09a38a246"
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <script>document.documentElement.classList.add('js');</script>
+
+  <nav class="nav" aria-label="Main">
+    <div class="container nav-inner">
+      <a class="nav-brand" href="#top">jake.jazokas</a>
+
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a class="nav-resume" href="resume/JakeJazokasResume.pdf" download="JakeJazokasResume.pdf" aria-label="Download resume"><span class="nav-resume-label">Resume</span></a>
+        <a class="nav-cta" href="mailto:jakejazokas@outlook.com">Email me</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <!-- ============ Hero ============ -->
+    <header class="hero" id="top">
+      <div class="container">
+        <h1>Jake Jazokas</h1>
+
+        <p class="hero-lede">
+          Software developer and technology leader. I take products from concept to live
+          deployment — leading teams, integrating critical systems, and shipping reliable
+          solutions in fast-moving environments.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-dark" href="mailto:jakejazokas@outlook.com">Get in touch</a>
+          <a class="btn btn-ghost" href="https://github.com/JakeJazokas" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/jake-jazokas-09a38a246" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+
+        <dl class="facts">
+          <div class="fact">
+            <dt>Education</dt>
+            <dd>B.C.S. Computer Science, Carleton University — High Distinction, 2022</dd>
+          </div>
+          <div class="fact">
+            <dt>Currently</dt>
+            <dd>Full stack developer at <a href="https://maverickgames.com" target="_blank" rel="noopener">Maverick Games</a></dd>
+          </div>
+          <div class="fact">
+            <dt>Focus</dt>
+            <dd>Mobile apps, distributed microservices, real-time production systems</dd>
+          </div>
+        </dl>
+      </div>
+    </header>
+
+    <!-- ============ About ============ -->
+    <section class="section" id="about" aria-labelledby="about-label">
+      <div class="container sec-grid">
+        <h2 class="sec-label reveal-fade" id="about-label">
+          <span class="sec-num">01</span>
+          <span class="sec-name">About</span>
+        </h2>
+
+        <div class="about-copy">
+          <p class="reveal" style="--d:0">
+            I'm a full stack software developer and technology leader who takes products from
+            concept to live deployment — launching mobile apps, optimizing distributed
+            microservices for real-time performance, and leading teams that turn ideas into
+            production-ready solutions quickly and reliably, including my current role building
+            full stack features at <a href="https://maverickgames.com" target="_blank" rel="noopener">Maverick Games</a>.
+          </p>
+          <p class="reveal" style="--d:1">
+            Day to day, I build with Go, TypeScript, JavaScript, Vue.js, and PostgreSQL —
+            owning features end to end, from the database schema through the API to the
+            interface on top. I've led development teams through launches and production
+            incidents, keeping delivery moving when it matters.
+          </p>
+          <p class="reveal" style="--d:2">
+            Outside product work, I enjoy the deep technical end of the stack — my side
+            projects include eBPF-based security policy generation and machine learning
+            intrusion detection, both born from a habit of asking how systems work at the
+            lowest level.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Projects ============ -->
+    <section class="section" id="projects" aria-labelledby="projects-label">
+      <div class="container sec-grid">
+        <h2 class="sec-label reveal-fade" id="projects-label">
+          <span class="sec-num">02</span>
+          <span class="sec-name">Projects</span>
+        </h2>
+
+        <div class="cards">
+
+          <article class="card reveal" style="--d:0">
+            <div class="card-media">
+              <img src="img/sturents.png" alt="Sturents — blueprint illustration of the Android rental listing app and scraper pipeline" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Sturents</h3>
+              <div class="card-tags">
+                <span class="tag">Android</span><span class="tag">Node.js</span><span class="tag">AWS</span>
+              </div>
+              <p class="card-text">
+                An Android application designed to scrape listings for student rentals from
+                the internet and intuitively display them.
+              </p>
+              <a class="card-link" href="https://github.com/JakeJazokas/Sturents" target="_blank" rel="noopener">View on GitHub</a>
+            </div>
+          </article>
+
+          <article class="card reveal" style="--d:1">
+            <div class="card-media">
+              <img src="img/bpfcontain.png" alt="BPFContain — policy pipeline from eBPF trace to kernel enforcement" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Automatic Policy Generation for BPFContain</h3>
+              <div class="card-tags">
+                <span class="tag">Python</span><span class="tag">Linux</span><span class="tag">eBPF</span>
+              </div>
+              <p class="card-text">
+                Automatically generate security policies for BPFContain based on the traced
+                operations of any program, leveraging the capabilities of the enhanced
+                Berkeley Packet Filter (eBPF).
+              </p>
+              <a class="card-link" href="https://github.com/JakeJazokas/AutomaticPoliciesForBPFContain" target="_blank" rel="noopener">View on GitHub</a>
+            </div>
+          </article>
+
+          <article class="card reveal" style="--d:0">
+            <div class="card-media">
+              <img src="img/humancounter.png" alt="Human Counter — detected people with confidence boxes and a count of four" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Human Counter</h3>
+              <div class="card-tags">
+                <span class="tag">Django</span><span class="tag">Python</span><span class="tag">OpenCV</span>
+              </div>
+              <p class="card-text">
+                A Django web application that can identify and count the number of people in
+                uploaded photos and videos.
+              </p>
+              <a class="card-link" href="https://github.com/JakeJazokas/HumanCounter" target="_blank" rel="noopener">View on GitHub</a>
+            </div>
+          </article>
+
+          <article class="card reveal" style="--d:1">
+            <div class="card-media">
+              <img src="img/mldetect.png" alt="ML intrusion detection — packet n-grams feeding a classifier verdict" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">Wi-Fi Intrusion Detection using Machine Learning</h3>
+              <div class="card-tags">
+                <span class="tag">Python</span><span class="tag">scikit-learn</span><span class="tag">ML</span>
+              </div>
+              <p class="card-text">
+                A machine learning implementation that classifies abnormal wireless network
+                activity, using n-grams extracted from streams of packets.
+              </p>
+              <a class="card-link" href="https://github.com/JakeJazokas/ML-Intrusion-Detection" target="_blank" rel="noopener">View on GitHub</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Skills ============ -->
+    <section class="section" id="skills" aria-labelledby="skills-label">
+      <div class="container sec-grid">
+        <h2 class="sec-label reveal-fade" id="skills-label">
+          <span class="sec-num">03</span>
+          <span class="sec-name">Skills</span>
+        </h2>
+
+        <div class="skill-rows">
+          <div class="skill-row">
+            <div class="skill-cat">Languages</div>
+            <ul class="skill-chips">
+              <li class="chip">Go</li><li class="chip">Python</li><li class="chip">C</li>
+              <li class="chip">Java</li><li class="chip">JavaScript</li><li class="chip">TypeScript</li>
+              <li class="chip">Perl</li><li class="chip">Shell Scripting</li>
+			  <li class="chip">Dart</li><li class="chip">Swift</li>
+            </ul>
+          </div>
+
+          <div class="skill-row">
+            <div class="skill-cat">Frameworks</div>
+            <ul class="skill-chips">
+              <li class="chip">Django</li><li class="chip">Node.js</li><li class="chip">Vue.js</li>
+              <li class="chip">TensorFlow</li><li class="chip">PyTorch</li>
+              <li class="chip">scikit-learn</li><li class="chip">Keras</li>
+			  <li class="chip">OpenCV</li><li class="chip">Gin</li>
+			  <li class="chip">Flask</li><li class="chip">Swing</li><li class="chip">RCP</li>
+              <li class="chip">Flutter</li>
+            </ul>
+          </div>
+
+          <div class="skill-row">
+            <div class="skill-cat">Cloud &amp; DevOps</div>
+            <ul class="skill-chips">
+              <li class="chip">Kubernetes</li><li class="chip">Docker</li>
+			  <li class="chip">GCP</li><li class="chip">AWS</li><li class="chip">Git</li>
+			  <li class="chip">Drone</li><li class="chip">Jenkins</li><li class="chip">ArgoCD</li>
+            </ul>
+          </div>
+
+          <div class="skill-row">
+            <div class="skill-cat">Testing &amp; Quality Engineering</div>
+            <ul class="skill-chips">
+              <li class="chip">Robot Framework </li><li class="chip">Cucumber</li>
+              <li class="chip">Selenium</li><li class="chip">Playwright</li>
+            </ul>
+          </div>
+
+          <div class="skill-row">
+            <div class="skill-cat">Leadership &amp; Compliance</div>
+            <ul class="skill-chips">
+              <li class="chip">Agile</li><li class="chip">Jira</li>
+              <li class="chip">iGaming Compliance</li><li class="chip">GDPR Compliance</li>
+            </ul>
+          </div>
+		  
+		  <div class="skill-row">
+            <div class="skill-cat">Databases</div>
+            <ul class="skill-chips">
+              <li class="chip">PostgreSQL</li><li class="chip">MongoDB</li>
+              <li class="chip">Firebase</li>
+            </ul>
+          </div>
+		  
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <span class="footer-note">© 2026 Jake Jazokas</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var els = document.querySelectorAll('.reveal, .reveal-fade');
+      var rows = document.querySelectorAll('.skill-row');
+
+      // per-row stagger within skills
+      rows.forEach(function (r, i) {
+        r.classList.add('reveal');
+        r.style.setProperty('--d', i);
+      });
+
+      if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.reveal, .reveal-fade').forEach(function (el) { el.classList.add('in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      els.forEach(function (el) { io.observe(el); });
+      rows.forEach(function (el) { io.observe(el); });
+
+      // nav links smooth-scroll to their section regardless of browser quirks
+      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (ev) {
+          var target = document.querySelector(a.getAttribute('href'));
+          if (!target) return;
+          ev.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    })();
+  </script>
+
+</body>
+
+</html>
