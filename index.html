@@ -699,8 +699,9 @@
       .sec-label { position: static; }
       .cards { grid-template-columns: 1fr; }
       .facts { grid-template-columns: 1fr; }
-      .fact { border-left: 0; border-top: 1px solid var(--hairline); padding: 20px 0 0; }
-      .fact:first-child { border-top: 0; padding: 0 0 4px; }
+      .fact { border-left: 0; border-top: 1px solid var(--hairline); padding: 20px 0 20px; }
+      .fact:first-child { border-top: 0; }
+      .fact:last-child { padding-bottom: 0; }
       .skill-row { grid-template-columns: 1fr; gap: 10px; padding: 18px 0; }
       .skill-cat { padding-top: 0; }
     }
